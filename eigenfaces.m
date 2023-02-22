@@ -117,21 +117,30 @@ for j=1:6
     end
 end
 
-inter = abs(piS).^2;
 
-sumhaut = zeros(h,1);
+% inter = abs(piS).^2;
+% 
+% sumhaut = zeros(h,1);
+% 
+% for p=1:6
+%     sumhaut = sumhaut + inter(:,p);
+% end
+% 
+% sumbas = zeros(h,1);
+% 
+% for q=1:6
+%     sumbas = sumbas + abs(imagescentrees(:,q)).^2;
+% end
+% 
+% Kl = sumhaut/sumbas;
 
-for p=1:6
-    sumhaut = sumhaut + inter(:,p);
+for i=1:l
+    sumhaut = sumhaut + ValP(i,i);
 end
 
-sumbas = zeros(h,1);
-
-for q=1:6
-    sumbas = sumbas + abs(imagescentrees(:,q)).^2;
+for i=1:p
+    sumbas = sumbas + ValP(i,i);
 end
 
 Kl = sumhaut/sumbas;
-
-
 
