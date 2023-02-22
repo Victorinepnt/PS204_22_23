@@ -67,20 +67,32 @@ Xt = transpose(X);
 
 [VecP,ValP] = eig(Xt*X);
 
+VecP = VecP(:,2:n);
+
 
 
 U = X*VecP*(transpose(VecP)*Xt*X*VecP)^(-1/2);
+U = [U zeros(h,1)];
 
 % Display the U 
 F = zeros(192*Nc,168*max(size_cls_trn));
+figure,
+title("Affichage des n eigenfaces");
+k = 1;
 for i=1:Nc
     for j=1:size_cls_trn(i)
           pos = sum(size_cls_trn(1:i-1))+j;
           F(192*(i-1)+1:192*i,168*(j-1)+1:168*j) = reshape(U(:,pos),[192,168]);
+          subplot(6,10,k)
+          imagesc(real(F(192*(i-1)+1:192*i,168*(j-1)+1:168*j)));
+          colormap(gray);
+          axis off;
+          k = k+1;
     end
 end
 
+
 figure;
-imagesc(F);
+imagesc(real(F));
 colormap(gray);
 axis off;
