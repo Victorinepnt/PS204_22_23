@@ -6,7 +6,7 @@ close all;
 
 %% Data extraction
 % Training set
-adr = './training1/';
+adr = './Database/training1/';
 fld = dir(adr);
 nb_elt = length(fld);
 % Data matrix containing the training images in its columns 
