@@ -6,7 +6,7 @@ close all;
 
 %% Data extraction
 % Training set
-adr = './database/training1/';
+adr = './training1/';
 fld = dir(adr);
 nb_elt = length(fld);
 % Data matrix containing the training images in its columns 
@@ -41,3 +41,46 @@ size_cls_trn = [bd(2:Nc)-bd(1:Nc-1);N-bd(Nc)+1];
 % imagesc(F);
 % colormap(gray);
 % axis off;
+
+%Calcul de U, matrice des vecteurs propres de R chapeau
+[h,n] = size(data_trn);
+
+Xbarre = zeros(h,1);
+
+for i=1:n
+    Xbarre = Xbarre + data_trn(:,i);
+end
+
+Xbarre = 1/n*Xbarre;
+
+X = zeros(h,n);
+
+for j=1:n
+    X(:,j) = data_trn(:,j) - Xbarre;
+    k = 1;
+    
+end
+
+X = 1/sqrt(n)*X;
+
+Xt = transpose(X);
+
+[VecP,ValP] = eig(Xt*X);
+
+
+
+U = X*VecP*(transpose(VecP)*Xt*X*VecP)^(-1/2);
+
+% Display the U 
+F = zeros(192*Nc,168*max(size_cls_trn));
+for i=1:Nc
+    for j=1:size_cls_trn(i)
+          pos = sum(size_cls_trn(1:i-1))+j;
+          F(192*(i-1)+1:192*i,168*(j-1)+1:168*j) = reshape(U(:,pos),[192,168]);
+    end
+end
+
+figure;
+imagesc(F);
+colormap(gray);
+axis off;
