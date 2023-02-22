@@ -57,7 +57,7 @@ X = zeros(h,n);
 
 for j=1:n
     X(:,j) = data_trn(:,j) - Xbarre;
-    k = 1;
+    m = 1;
     
 end
 
@@ -78,16 +78,16 @@ U = [U zeros(h,1)];
 F = zeros(192*Nc,168*max(size_cls_trn));
 figure,
 title("Affichage des n eigenfaces");
-k = 1;
+m = 1;
 for i=1:Nc
     for j=1:size_cls_trn(i)
           pos = sum(size_cls_trn(1:i-1))+j;
           F(192*(i-1)+1:192*i,168*(j-1)+1:168*j) = reshape(U(:,pos),[192,168]);
-          subplot(6,10,k)
+          subplot(6,10,m)
           imagesc(real(F(192*(i-1)+1:192*i,168*(j-1)+1:168*j)));
           colormap(gray);
           axis off;
-          k = k+1;
+          m = m+1;
     end
 end
 
@@ -96,3 +96,41 @@ figure;
 imagesc(real(F));
 colormap(gray);
 axis off;
+
+%Question 3
+
+l=10;
+index = 4;
+images = zeros(h,6);
+for i=1:6
+    images(:,i) = data_trn(:,index+10*(i-1));
+end
+
+imagescentrees = images - Xbarre;
+
+piS = zeros(h,6);
+
+for j=1:6
+    for m=1:l
+        piS(:,j) = piS(:,j) +  (U(:,m)'*imagescentrees(:,j))*U(:,m);
+    end
+end
+
+inter = abs(piS).^2;
+
+sumhaut = zeros(h,1);
+
+for p=1:6
+    sumhaut = sumhaut + inter(:,p);
+end
+
+sumbas = zeros(h,1);
+
+for q=1:6
+    sumbas = sumbas + abs(imagescentrees(:,q)).^2;
+end
+
+Kl = sumhaut/sumbas;
+
+
+
