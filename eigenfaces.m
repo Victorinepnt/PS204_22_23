@@ -6,7 +6,7 @@ close all;
 
 %% Data extraction
 % Training set
-adr = './Database/training1/';
+adr = './database/training1/';
 fld = dir(adr);
 nb_elt = length(fld);
 % Data matrix containing the training images in its columns 
@@ -100,8 +100,8 @@ axis off;
 
 %Question 3
 
-l=10;
-index = 4;
+l=1;
+index = 9;
 images = zeros(h,6);
 for i=1:6
     images(:,i) = data_trn(:,index+10*(i-1));
@@ -115,6 +115,34 @@ for j=1:6
     for m=1:l
         piS(:,j) = piS(:,j) +  (U(:,m)'*imagescentrees(:,j))*U(:,m);
     end
+end
+
+F2 = zeros(192*Nc,168*Nc);
+figure,
+title("Affichage des n eigenfaces");
+m = 1;
+for i=1:Nc
+      pos = i;
+      F2(192*(i-1)+1:192*i,1:168) = reshape(piS(:,pos),[192,168]);
+      subplot(2,3,m)
+      imagesc(real(F2(192*(i-1)+1:192*i,1:168)));
+      colormap(gray);
+      axis off;
+      m = m+1;
+end
+
+F3 = zeros(192*Nc,168*Nc);
+figure,
+title("Affichage des n eigenfaces");
+m = 1;
+for i=1:Nc
+      pos = i;
+      F3(192*(i-1)+1:192*i,1:168) = reshape(images(:,pos),[192,168]);
+      subplot(2,3,m)
+      imagesc(real(F3(192*(i-1)+1:192*i,1:168)));
+      colormap(gray);
+      axis off;
+      m = m+1;
 end
 
 
@@ -133,12 +161,15 @@ end
 % end
 % 
 % Kl = sumhaut/sumbas;
+sumhaut = 0;
 
 for i=1:l
     sumhaut = sumhaut + ValP(i,i);
 end
 
-for i=1:p
+sumbas = 0;
+
+for i=1:n
     sumbas = sumbas + ValP(i,i);
 end
 
