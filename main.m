@@ -4,6 +4,4 @@ clc,
 
 %% Chargement/affichage des images
 
-filenames = unzip("database.zip");
-
-vect=affimg();
+vect=affimg('./database/test1/');

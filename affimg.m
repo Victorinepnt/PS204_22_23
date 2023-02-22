@@ -1,8 +1,6 @@
-clear,
-close all,
-clc,
+function [vect]=affimg(dos)
 
-adr = './database/test1/';
+adr = dos;
 fld = dir(adr);
 nb_elt = length(fld);
 % Data matrix containing the training images in its columns 
@@ -21,4 +19,5 @@ for i=1:nb_elt
         pause(0.1);
         data_trn = [data_trn img(:)];
     end
+end
 end
