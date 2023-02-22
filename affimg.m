@@ -7,17 +7,23 @@ nb_elt = length(fld);
 data_trn = []; 
 % Vector containing the class of each training image
 lb_trn = []; 
+k=1;
+figure,
 for i=1:nb_elt
     if fld(i).isdir == false
         lb_trn = [lb_trn ; str2num(fld(i).name(6:7))];
         img = double(imread([adr fld(i).name]));
-        imgv = img( :) ;
-        vect(1,i,:)=imgv;
+        imgv = img(:) ;
+        vect(i,:)=imgv;
+        subplot(6,10,k);
+        k=k+1;
         imagesc(img) ;
         colormap(gray) ;
+        axis off;
         drawnow;
-        pause(0.1);
         data_trn = [data_trn img(:)];
+        
     end
 end
+
 end

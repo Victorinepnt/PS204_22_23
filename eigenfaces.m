@@ -83,4 +83,5 @@ end
 figure;
 imagesc(F);
 colormap(gray);
+title("Affichage des eigenfaces")
 axis off;
