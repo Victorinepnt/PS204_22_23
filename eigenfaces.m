@@ -100,14 +100,19 @@ axis off;
 
 %Question 3
 
-l=1;
+%l que l'on choisi pour le facespace
+%On doit prendre les U dans l'autre sens pour 
+%que notre prennent en compte les images les plus 
+%énergétique
+l=10;
+%index de la photo sur laquelle on veut travailler
 index = 9;
 images = zeros(h,6);
-for i=1:6
-    images(:,i) = data_trn(:,index+10*(i-1));
-end
 
-imagescentrees = images - Xbarre;
+
+for i=1:l
+    images(:,i) = data_trn(:,index+10*(i-1));
+    imagescentrees = images - Xbarre;
 
 piS = zeros(h,6);
 
@@ -119,12 +124,12 @@ end
 
 F2 = zeros(192*Nc,168*Nc);
 figure,
-title("Affichage des n eigenfaces");
+title("Affichage des l eigenfacesF2"),
 m = 1;
 for i=1:Nc
       pos = i;
       F2(192*(i-1)+1:192*i,1:168) = reshape(piS(:,pos),[192,168]);
-      subplot(2,3,m)
+      subplot(6,l,m)
       imagesc(real(F2(192*(i-1)+1:192*i,1:168)));
       colormap(gray);
       axis off;
@@ -133,7 +138,7 @@ end
 
 F3 = zeros(192*Nc,168*Nc);
 figure,
-title("Affichage des n eigenfaces");
+title("Affichage des n eigenfaces F3");
 m = 1;
 for i=1:Nc
       pos = i;
@@ -161,6 +166,9 @@ end
 % end
 % 
 % Kl = sumhaut/sumbas;
+
+%Question 4
+
 sumhaut = 0;
 
 for i=1:l
