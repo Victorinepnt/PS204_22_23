@@ -201,6 +201,18 @@ end
 
 matconf=confusionmat(lb_trn,classe_estim);
 
+imgsuite = [imagescentrees(:,1) imagescentrees(:,2) imagescentrees(:,3) imagescentrees(:,4) imagescentrees(:,5) imagescentrees(:,6)];
+
+omegas = zeros(l,n);
+
+i=1;
+for y=1:6
+    z=1
+    while z<h
+        omegas(:,i) = calcomega(imgsuite(z:z+(192+168),y),U,l);
+        z = z+(192+168);
+    end
+end
 
 
 
