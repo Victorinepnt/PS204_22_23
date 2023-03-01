@@ -99,16 +99,24 @@ title("Affichage des eigenfaces");
 axis off;
 
 %Question 3
-    %On récupère des images à traiter
+%l que l'on choisi pour le facespace
+%On doit prendre les U dans l'autre sens pour 
+%que notre prennent en compte les images les plus 
+%énergétique
 l=10;
-index = 2;
+%index de la photo sur laquelle on veut travailler
+index = 3;
 images = zeros(h,6);
 
 for i=1:6
     images(:,i) = data_trn(:,index+10*(i-1));
 end
 
-imagescentrees = images - Xbarre;
+
+for i=1:6
+    images(:,i) = data_trn(:,index+10*(i-1));
+    imagescentrees = images - Xbarre;
+end
 
 piS = zeros(h,6);
     %Calcul de piS
@@ -136,6 +144,7 @@ end
 title("Images reconstruites après ACP");
 
 F3 = zeros(192*Nc,168*Nc);
+
 figure(3),
 m = 1;
 for i=1:Nc
@@ -149,6 +158,24 @@ for i=1:Nc
 end
 title("Images de références");
 
+% inter = abs(piS).^2;
+% 
+% sumhaut = zeros(h,1);
+% 
+% for p=1:6
+%     sumhaut = sumhaut + inter(:,p);
+% end
+% 
+% sumbas = zeros(h,1);
+% 
+% for q=1:6
+%     sumbas = sumbas + abs(imagescentrees(:,q)).^2;
+% end
+% 
+% Kl = sumhaut/sumbas;
+
+
+%Question 4
     %Calcul du ratio de l'énergie de projection
 
 Kl = zeros(1,n);
