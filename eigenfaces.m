@@ -149,34 +149,30 @@ for i=1:Nc
 end
 title("Images de références");
 
-% inter = abs(piS).^2;
-% 
-% sumhaut = zeros(h,1);
-% 
-% for p=1:6
-%     sumhaut = sumhaut + inter(:,p);
-% end
-% 
-% sumbas = zeros(h,1);
-% 
-% for q=1:6
-%     sumbas = sumbas + abs(imagescentrees(:,q)).^2;
-% end
-% 
-% Kl = sumhaut/sumbas;
-
     %Calcul du ratio de l'énergie de projection
-sumhaut = 0;
 
-for i=1:l
-    sumhaut = sumhaut + ValP(i,i);
+Kl = zeros(1,n);
+lindex = [1:n];
+lstar = 0;
+
+for P=1:n
+    sumhaut = 0;
+    sumbas = 0;
+    for i=1:lindex(1,P)
+        sumhaut = sumhaut + ValP(n-i+1,n-i+1);
+    end
+
+    for i=1:n
+        sumbas = sumbas + ValP(i,i);
+    end
+
+    Kl(1,P) = sumhaut/sumbas;
+    
+    if(Kl(1,P)>0.9 && lstar==0)
+        lstar = P;
+    end
 end
 
-sumbas = 0;
-
-for i=1:n
-    sumbas = sumbas + ValP(i,i);
-end
-
-Kl = sumhaut/sumbas;
-
+figure(4);
+plot(Kl);
+title("Evolution du ratio de l'énergie de projection en fonction de la dimension de l'espace de projection");
