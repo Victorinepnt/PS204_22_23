@@ -191,8 +191,15 @@ title("Evolution du ratio de l'énergie de projection en fonction de la dimensio
 
 k=10;
 
-[classe_estim]=kNN(ValP(11,11),ValP,k,n,lb_trn,cls_trn);
+classe_estim=zeros(1,n);
 
+for i=1:n
+    classe_estim(1,i)=kNN(ValP(i,i),ValP,k,n,lb_trn,cls_trn);
+end
+
+
+
+matconf=confusionmat(lb_trn,classe_estim);
 
 
 

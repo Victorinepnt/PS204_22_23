@@ -34,7 +34,7 @@ end
 
 maxi = max(totsum(2,:));
 
-[k,j] = find(totsum(2,:) == maxi);
+[k,j] = find(totsum(2,:) == maxi,1);
 
 res = totsum(1,j);
 
