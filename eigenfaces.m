@@ -158,23 +158,6 @@ for i=1:Nc
 end
 title("Images de références");
 
-% inter = abs(piS).^2;
-% 
-% sumhaut = zeros(h,1);
-% 
-% for p=1:6
-%     sumhaut = sumhaut + inter(:,p);
-% end
-% 
-% sumbas = zeros(h,1);
-% 
-% for q=1:6
-%     sumbas = sumbas + abs(imagescentrees(:,q)).^2;
-% end
-% 
-% Kl = sumhaut/sumbas;
-
-
 %Question 4
     %Calcul du ratio de l'énergie de projection
 
@@ -203,3 +186,18 @@ end
 figure(4);
 plot(Kl);
 title("Evolution du ratio de l'énergie de projection en fonction de la dimension de l'espace de projection");
+
+%%Classification
+
+k=10;
+
+[classe_estim]=kNN(ValP(11,11),ValP,k,n,lb_trn,cls_trn);
+
+
+
+
+
+
+
+
+
