@@ -92,17 +92,18 @@ for i=1:Nc
 end
 
 
-figure;
+figure(1);
 imagesc(real(F));
 colormap(gray);
-title("Affichage des eigenfaces")
+title("Affichage des eigenfaces");
 axis off;
 
 %Question 3
-
-l=1;
+    %On récupère des images à traiter
+l=10;
 index = 9;
 images = zeros(h,6);
+
 for i=1:6
     images(:,i) = data_trn(:,index+10*(i-1));
 end
@@ -110,16 +111,18 @@ end
 imagescentrees = images - Xbarre;
 
 piS = zeros(h,6);
-
+    %Calcul de piS
 for j=1:6
     for m=1:l
         piS(:,j) = piS(:,j) +  (U(:,m)'*imagescentrees(:,j))*U(:,m);
     end
 end
 
+piS = piS + Xbarre;
+
+    %Affichage
 F2 = zeros(192*Nc,168*Nc);
-figure,
-title("Affichage des n eigenfaces");
+figure(2),
 m = 1;
 for i=1:Nc
       pos = i;
@@ -130,10 +133,10 @@ for i=1:Nc
       axis off;
       m = m+1;
 end
+title("Images reconstruites après ACP");
 
 F3 = zeros(192*Nc,168*Nc);
-figure,
-title("Affichage des n eigenfaces");
+figure(3),
 m = 1;
 for i=1:Nc
       pos = i;
@@ -144,7 +147,7 @@ for i=1:Nc
       axis off;
       m = m+1;
 end
-
+title("Images de références");
 
 % inter = abs(piS).^2;
 % 
@@ -161,6 +164,8 @@ end
 % end
 % 
 % Kl = sumhaut/sumbas;
+
+    %Calcul du ratio de l'énergie de projection
 sumhaut = 0;
 
 for i=1:l
