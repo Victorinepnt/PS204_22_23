@@ -101,7 +101,7 @@ axis off;
 %Question 3
     %On récupère des images à traiter
 l=10;
-index = 9;
+index = 2;
 images = zeros(h,6);
 
 for i=1:6
@@ -113,7 +113,7 @@ imagescentrees = images - Xbarre;
 piS = zeros(h,6);
     %Calcul de piS
 for j=1:6
-    for m=1:l
+    for m=n-l:n
         piS(:,j) = piS(:,j) +  (U(:,m)'*imagescentrees(:,j))*U(:,m);
     end
 end
