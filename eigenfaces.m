@@ -6,29 +6,13 @@ close all;
 
 %% Data extraction
 % Training set
-adr = './database/training1/';
-fld = dir(adr);
-nb_elt = length(fld);
-% Data matrix containing the training images in its columns 
-data_trn = []; 
-% Vector containing the class of each training image
-lb_trn = []; 
-for i=1:nb_elt
-    if fld(i).isdir == false
-        lb_trn = [lb_trn ; str2num(fld(i).name(6:7))];
-        img = double(imread([adr fld(i).name]));
-        data_trn = [data_trn img(:)];
-    end
-end
-% Size of the training set
-[P,N] = size(data_trn);
-% Classes contained in the training set
-[~,I]=sort(lb_trn);
-data_trn = data_trn(:,I);
-[cls_trn,bd,~] = unique(lb_trn);
-Nc = length(cls_trn); 
-% Number of training images in each class
-size_cls_trn = [bd(2:Nc)-bd(1:Nc-1);N-bd(Nc)+1]; 
+adrtr = './database/training1/';
+adrte = './database/test1/';
+
+[lb_trn,data_train,size_trn,Nc_trn,cls_trn] = data_extraction(adrtr);
+[lb_te,data_test,size_te,Nc_te,cls_te] = data_extraction(adrte);
+
+
 % Display the database
 % F = zeros(192*Nc,168*max(size_cls_trn));
 % for i=1:Nc
@@ -43,61 +27,9 @@ size_cls_trn = [bd(2:Nc)-bd(1:Nc-1);N-bd(Nc)+1];
 % axis off;
 
 %Calcul de U, matrice des vecteurs propres de R chapeau
-[h,n] = size(data_trn);
 
-Xbarre = zeros(h,1);
-
-for i=1:n
-    Xbarre = Xbarre + data_trn(:,i);
-end
-
-Xbarre = 1/n*Xbarre;
-
-X = zeros(h,n);
-
-for j=1:n
-    X(:,j) = data_trn(:,j) - Xbarre;
-    m = 1;
-    
-end
-
-X = 1/sqrt(n)*X;
-
-Xt = transpose(X);
-
-[VecP,ValP] = eig(Xt*X);
-
-VecP = VecP(:,2:n);
-
-
-
-U = X*VecP*(transpose(VecP)*Xt*X*VecP)^(-1/2);
-U = [U zeros(h,1)];
-
-% Display the U 
-F = zeros(192*Nc,168*max(size_cls_trn));
-figure,
-title("Affichage des n eigenfaces");
-m = 1;
-for i=1:Nc
-    for j=1:size_cls_trn(i)
-          pos = sum(size_cls_trn(1:i-1))+j;
-          F(192*(i-1)+1:192*i,168*(j-1)+1:168*j) = reshape(U(:,pos),[192,168]);
-          subplot(6,10,m)
-          imagesc(real(F(192*(i-1)+1:192*i,168*(j-1)+1:168*j)));
-          colormap(gray);
-          axis off;
-          m = m+1;
-    end
-end
-
-
-figure(1);
-imagesc(real(F));
-colormap(gray);
-title("Affichage des eigenfaces");
-axis off;
-
+[U,VecP,ValP, Xbarre]=calcU(data_train,size_trn,Nc_trn);
+[h,n] = size(data_train);
 %Question 3
 %l que l'on choisi pour le facespace
 %On doit prendre les U dans l'autre sens pour 
@@ -109,12 +41,12 @@ index = 3;
 images = zeros(h,6);
 
 for i=1:6
-    images(:,i) = data_trn(:,index+10*(i-1));
+    images(:,i) = data_train(:,index+10*(i-1));
 end
 
 
 for i=1:6
-    images(:,i) = data_trn(:,index+10*(i-1));
+    images(:,i) = data_train(:,index+10*(i-1));
     imagescentrees = images - Xbarre;
 end
 
@@ -129,10 +61,10 @@ end
 piS = piS + Xbarre;
 
     %Affichage
-F2 = zeros(192*Nc,168*Nc);
+F2 = zeros(192*Nc_trn,168*Nc_trn);
 figure(2),
 m = 1;
-for i=1:Nc
+for i=1:Nc_trn
       pos = i;
       F2(192*(i-1)+1:192*i,1:168) = reshape(piS(:,pos),[192,168]);
       subplot(2,3,m)
@@ -143,11 +75,11 @@ for i=1:Nc
 end
 title("Images reconstruites après ACP");
 
-F3 = zeros(192*Nc,168*Nc);
+F3 = zeros(192*Nc_trn,168*Nc_trn);
 
 figure(3),
 m = 1;
-for i=1:Nc
+for i=1:Nc_trn
       pos = i;
       F3(192*(i-1)+1:192*i,1:168) = reshape(images(:,pos),[192,168]);
       subplot(2,3,m)
@@ -187,6 +119,9 @@ figure(4);
 plot(Kl);
 title("Evolution du ratio de l'énergie de projection en fonction de la dimension de l'espace de projection");
 
+W_train = center_project_firsts(data_train, U, l);
+%W_train = calcomega(imagescentrees, U, l);
+W_test = center_project_firsts(data_test,U,l);
 %%Classification
 
 k=10;
@@ -203,14 +138,9 @@ matconf=confusionmat(lb_trn,classe_estim);
 
 imgsuite = [imagescentrees(:,1) imagescentrees(:,2) imagescentrees(:,3) imagescentrees(:,4) imagescentrees(:,5) imagescentrees(:,6)];
 
-omegas = zeros(l,n/l);
 
-i=1;
-for y=1:6
-    %z=1;
-    omegas(:,i) = calcomega(imgsuite(:,y),U,l);
-    i = i + 1;
-end
+
+
 
 
 
