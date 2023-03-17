@@ -36,45 +36,49 @@ adrte = './database/test3/';
 %On doit prendre les U dans l'autre sens pour 
 %que notre prennent en compte les images les plus 
 %énergétique
-l=10;
+l=[1, 5, 10, 15, 30];
 %index de la photo sur laquelle on veut travailler
 index = 3;
 images = zeros(h,6);
-
-for i=1:6
+for o=1:5
+    for i=1:6
     images(:,i) = data_train(:,index+10*(i-1));
-end
+    end
 
 
-for i=1:6
+    for i=1:6
     images(:,i) = data_train(:,index+10*(i-1));
     imagescentrees = images - Xbarre;
-end
+    end
 
-piS = zeros(h,6);
+    piS = zeros(h,6);
     %Calcul de piS
-for j=1:6
-    for m=n-l:n
+    for j=1:6
+    for m=n-l(o):n
         piS(:,j) = piS(:,j) +  (U(:,m)'*imagescentrees(:,j))*U(:,m);
     end
-end
+    end
 
-piS = piS + Xbarre;
-
+    piS = piS + Xbarre;
+    
     %Affichage
-F2 = zeros(192*Nc_trn,168*Nc_trn);
-figure(2),
-m = 1;
-for i=1:Nc_trn
+    F2 = zeros(192*Nc_trn,168*Nc_trn);
+    figure(2),
+    m = 1;
+    for i=1:Nc_trn
       pos = i;
       F2(192*(i-1)+1:192*i,1:168) = reshape(piS(:,pos),[192,168]);
-      subplot(2,3,m)
+      subplot(5,6,(o-1)*6+m)
       imagesc(real(F2(192*(i-1)+1:192*i,1:168)));
       colormap(gray);
       axis off;
       m = m+1;
+    end
+
 end
-title("Images reconstruites après ACP");
+
+    
+%title("Images reconstruites après ACP");
 
 F3 = zeros(192*Nc_trn,168*Nc_trn);
 
@@ -124,8 +128,8 @@ title("Evolution du ratio de l'énergie de projection en fonction de la dimensio
 
 [U,VecP,ValP] = calcU1(data_train);
 
-W_train = calcomega(data_train, U, l);
-W_test = calcomega(data_test,U,l);
+W_train = calcomega(data_train, U, l(3));
+W_test = calcomega(data_test,U,l(3));
 
 %Classification
 k=8;
@@ -139,6 +143,7 @@ end
 
 %Evaluation
 matconf=confusionmat(classe_estim,lb_te);
+figure(5),
 heatmap(matconf);
 
 
