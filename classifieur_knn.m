@@ -7,7 +7,7 @@ close all;
 %% Data extraction
 % Training set
 adrtr = './database/training1/';
-adrte = './database/test1/';
+adrte = './database/test3/';
 
 [lb_trn,data_train,size_trn,Nc_trn,cls_trn] = data_extraction(adrtr);
 [lb_te,data_test,size_te,Nc_te,cls_te] = data_extraction(adrte);
