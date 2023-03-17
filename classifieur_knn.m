@@ -144,7 +144,7 @@ heatmap(matconf);
 
 %Calcul des erreurs
 
-err=calcErr(matconf)
+err=calcErr(matconf);
 
 
 
