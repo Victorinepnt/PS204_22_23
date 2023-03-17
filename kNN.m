@@ -1,18 +1,18 @@
-function [res]=kNN(wtest,ValP,k,n,class,cls_trn)
+function [res]=kNN(wtest,wtrain,k,class,cls_trn)
 
 %Calculer la distance entre les composantes principales,
 %ranger par ordre croissant, prendre les k plus proche
 
 %deuxième formule: classe la plus représentée
-
+n=size(wtrain,2);
 nu=zeros(1,n-1);
 
 for i=1:n-1
-    nu(i)=abs(wtest-ValP(i,i));
-    
+    nu(i)=norm(wtest-wtrain(:,i));
 end
 
 nutriee = sort(nu);
+
 
 
 phi = nutriee(1:k);

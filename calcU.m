@@ -49,8 +49,8 @@ for i=1:Nc
 end
 
 
-figure(1);
-imagesc(real(F));
-colormap(gray);
-title("Affichage des eigenfaces");
-axis off;
+% figure(1);
+% imagesc(real(F));
+% colormap(gray);
+% title("Affichage des eigenfaces");
+% axis off;

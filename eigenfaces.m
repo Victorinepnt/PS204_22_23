@@ -30,6 +30,7 @@ adrte = './database/test1/';
 
 [U,VecP,ValP, Xbarre]=calcU(data_train,size_trn,Nc_trn);
 [h,n] = size(data_train);
+
 %Question 3
 %l que l'on choisi pour le facespace
 %On doit prendre les U dans l'autre sens pour 
@@ -119,26 +120,26 @@ figure(4);
 plot(Kl);
 title("Evolution du ratio de l'énergie de projection en fonction de la dimension de l'espace de projection");
 
-W_train = center_project_firsts(data_train, U, l);
-%W_train = calcomega(imagescentrees, U, l);
-W_test = center_project_firsts(data_test,U,l);
-%%Classification
+%Calcul de omega
 
-k=10;
+[U,VecP,ValP] = calcU1(data_train);
 
-classe_estim=zeros(1,n);
+W_train = calcomega(data_train, U, l);
+W_test = calcomega(data_test,U,l);
 
-for i=1:n
-    classe_estim(1,i)=kNN(ValP(i,i),ValP,k,n,lb_trn,cls_trn);
+%Classification
+k=8;
+[h_te,n_te]=size(data_test);
+
+classe_estim=zeros(1,n_te);
+for i=1:n_te
+    classe_estim(1,i)=kNN(W_test(:,i),W_train,k,lb_trn,cls_trn);
 end
 
 
-
-matconf=confusionmat(lb_trn,classe_estim);
-
-imgsuite = [imagescentrees(:,1) imagescentrees(:,2) imagescentrees(:,3) imagescentrees(:,4) imagescentrees(:,5) imagescentrees(:,6)];
-
-
+%Evaluation
+matconf=confusionmat(classe_estim,lb_te);
+plot_confmat(matconf);
 
 
 

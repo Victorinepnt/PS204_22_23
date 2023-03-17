@@ -1,9 +1,9 @@
-function [omega]=calcomega(x_xbarre,U,l)
+function [omega]=calcomega(images,U,l)
 
-[h,w] = size(x_xbarre);
-omega = zeros(1,w);
-
+[h,w] = size(images);
+omega = zeros(l,w);
+X_mean = mean(images,2);
 for i=1:w
-    ret = 1;
-    omega(:,i) = x_xbarre(:,i)'*U(:,1:l);
+    x_xbarre = images(:,i) - X_mean;
+    omega(:,i) = x_xbarre'*U(:,1:l);
 end
