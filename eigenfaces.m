@@ -139,10 +139,12 @@ end
 
 %Evaluation
 matconf=confusionmat(classe_estim,lb_te);
-plot_confmat(matconf);
+heatmap(matconf);
 
 
+%Calcul des erreurs
 
+err=calcErr(matconf)
 
 
 
